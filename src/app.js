@@ -18,8 +18,8 @@ import routeConfiguration from './routeConfiguration';
 import Routes from './Routes';
 import config from './config';
 
-// Flex template application uses English translations as default translations.
-import defaultMessages from './translations/en.json';
+// Flex template application uses English translations as default.
+import defaultMessages from './translations/es.json';
 
 // If you want to change the language of default (fallback) translations,
 // change the imports to match the wanted locale:
@@ -71,6 +71,12 @@ const addMissingTranslations = (sourceLangTranslations, targetLangTranslations) 
 // Note: Locale should not affect the tests. We ensure this by providing
 //       messages with the key as the value of each message and discard the value.
 //       { 'My.translationKey1': 'My.translationKey1', 'My.translationKey2': 'My.translationKey2' }
+const isDefaultLanguageInUse = config.locale === 'es';
+
+const messages = isDefaultLanguageInUse
+  ? defaultMessages
+  : addMissingTranslations(defaultMessages, messagesInLocale);
+
 const isTestEnv = process.env.NODE_ENV === 'test';
 const localeMessages = isTestEnv
   ? mapValues(defaultMessages, (val, key) => key)
@@ -80,7 +86,7 @@ const setupLocale = () => {
   if (isTestEnv) {
     // Use english as a default locale in tests
     // This affects app.test.js and app.node.test.js tests
-    config.locale = 'en';
+    config.locale = 'es';
     return;
   }
 
